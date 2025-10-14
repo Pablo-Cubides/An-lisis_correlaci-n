@@ -37,8 +37,8 @@ export default function FileUploader({ onUpload, loading }: FileUploaderProps) {
       setError("Formato no válido. Solo se permiten archivos .csv o .xlsx.")
       return
     }
-    if (file.size > 10 * 1024 * 1024) {
-      setError("El archivo supera el límite de 10 MB.")
+    if (file.size > 20 * 1024 * 1024) {
+      setError("El archivo supera el límite de 20 MB.")
       return
     }
     setError(null)
@@ -67,7 +67,7 @@ export default function FileUploader({ onUpload, loading }: FileUploaderProps) {
         />
         <span className="text-primary text-3xl mb-2">⬆️</span>
         <span className="text-gray-700 font-medium">Arrastra y suelta tu archivo aquí</span>
-        <span className="text-xs text-gray-500">o haz clic para seleccionar un archivo .csv o .xlsx (máx. 10 MB)</span>
+        <span className="text-xs text-gray-500">o haz clic para seleccionar un archivo .csv o .xlsx (máx. 20 MB)</span>
       </div>
       {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
     </div>

@@ -1,4 +1,5 @@
 import React from "react"
+import type { CorrelationResult } from '../app/utils'
 
 const methodInfo = {
   pearson: {
@@ -24,19 +25,7 @@ function getStrengthColor(value: number): string {
   return "text-red-600"
 }
 
-function getStrengthLabel(value: number): string {
-  if (Math.abs(value) > 0.75) return "Fuerte"
-  if (Math.abs(value) >= 0.4) return "Moderada"
-  return "Débil"
-}
-
-interface CorrelationResult {
-  column_a: string
-  column_b: string
-  pearson: number
-  spearman: number
-  kendall: number
-}
+// getStrengthLabel removed — unused helper
 
 interface CorrelationTableProps {
   numericColumns: string[]
@@ -84,18 +73,21 @@ export default function CorrelationTable({ numericColumns, correlationResults }:
                   <td key={colCol} className="p-2 border text-center">
                     {res ? (
                       <div className="flex flex-col gap-1 items-center">
-                        {(["pearson", "spearman", "kendall"] as const).map(method => (
-                          <span
-                            key={method}
-                            className={`group relative cursor-help text-xs font-medium ${getStrengthColor(res[method])}`}
-                          >
-                            {methodInfo[method].label}: {res[method].toFixed(2)}
-                            <span className="ml-1">{getStrengthEmoji(res[method])}</span>
-                            <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1 z-10 whitespace-nowrap">
-                              {methodInfo[method].tooltip}
+                        {(["pearson", "spearman", "kendall"] as const).map(method => {
+                          const val = res[method] as number | null
+                          return (
+                            <span
+                              key={method}
+                              className={`group relative cursor-help text-xs font-medium ${val !== null ? getStrengthColor(val) : 'text-gray-400'}`}
+                            >
+                              {methodInfo[method].label}: {val !== null ? val.toFixed(2) : 'N/A'}
+                              <span className="ml-1">{val !== null ? getStrengthEmoji(val) : ''}</span>
+                              <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1 z-10 whitespace-nowrap">
+                                {methodInfo[method].tooltip}
+                              </span>
                             </span>
-                          </span>
-                        ))}
+                          )
+                        })}
                       </div>
                     ) : (
                       <span className="text-gray-300">N/A</span>

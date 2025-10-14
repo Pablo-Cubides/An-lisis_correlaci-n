@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
         </main>
         <footer className="text-xs text-gray-400 py-4 text-center border-t border-gray-100">
-          © 2025 Relational Insight — Desarrollado con Next.js & FastAPI
+          © 2025 Relational Insight — Desarrollado con Next.js
         </footer>
       </body>
     </html>

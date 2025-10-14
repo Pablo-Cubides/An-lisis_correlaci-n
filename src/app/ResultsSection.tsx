@@ -4,6 +4,7 @@ import CorrelationTable from "../components/CorrelationTable"
 import CorrelationHeatmap from "../components/CorrelationHeatmap"
 import ScatterPlot from "../components/ScatterPlot"
 import ExportButtons from "../components/ExportButtons"
+import type { Row, CorrelationResult } from './utils'
 
 const methodOptions = [
   { value: "pearson", label: "Pearson" },
@@ -11,7 +12,7 @@ const methodOptions = [
   { value: "kendall", label: "Kendall Tau" },
 ]
 
-export default function ResultsSection({ result }: { result: any }) {
+export default function ResultsSection({ result }: { result: { filename: string; correlation_results: CorrelationResult[]; numeric_columns: string[]; raw_data: Row[] } }) {
   const [method, setMethod] = useState<"pearson" | "spearman" | "kendall">("pearson")
   const [selectedPair, setSelectedPair] = useState<[string, string] | null>(null)
 
@@ -20,10 +21,11 @@ export default function ResultsSection({ result }: { result: any }) {
   }
 
   const heatmapRef = React.useRef<HTMLDivElement>(null)
+  const scatterPlotRef = React.useRef<HTMLDivElement>(null)
   return (
     <div className="flex flex-col gap-8">
       <div className="mb-2 font-semibold text-center text-green-700">¡Análisis completado!</div>
-      <ExportButtons correlationResults={result.correlation_results} numericColumns={result.numeric_columns} rawData={result.raw_data} heatmapRef={heatmapRef} />
+  <ExportButtons correlationResults={result.correlation_results} heatmapRef={heatmapRef} scatterPlotRef={scatterPlotRef} />
       <CorrelationTable
         numericColumns={result.numeric_columns}
         correlationResults={result.correlation_results}
@@ -34,7 +36,7 @@ export default function ResultsSection({ result }: { result: any }) {
           <select
             className="px-2 py-1 text-sm border rounded"
             value={method}
-            onChange={e => setMethod(e.target.value as any)}
+            onChange={e => setMethod(e.target.value as "pearson" | "spearman" | "kendall")}
           >
             {methodOptions.map(opt => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -52,10 +54,12 @@ export default function ResultsSection({ result }: { result: any }) {
         </div>
       </div>
       {selectedPair && (
-        <div className="mt-8">
+        <div className="mt-8" ref={scatterPlotRef}>
           <ScatterPlot
-            data={result.raw_data.filter((row: any) =>
-              typeof row[selectedPair[0]] === 'number' && typeof row[selectedPair[1]] === 'number')}
+            data={result.raw_data
+              .filter((row): row is Record<string, number> =>
+                typeof row[selectedPair[0]] === 'number' && typeof row[selectedPair[1]] === 'number')
+              .map(row => ({ [selectedPair[0]]: row[selectedPair[0]] as number, [selectedPair[1]]: row[selectedPair[1]] as number }))}
             xKey={selectedPair[0]}
             yKey={selectedPair[1]}
           />

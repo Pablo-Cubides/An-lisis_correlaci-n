@@ -27,7 +27,7 @@ export default function ScatterPlot({ data, xKey, yKey }: ScatterPlotProps) {
           <XAxis dataKey={xKey} name={xKey} tick={{ fontSize: 12 }} />
           <YAxis dataKey={yKey} name={yKey} tick={{ fontSize: 12 }} />
           <Tooltip
-            formatter={(value: any, name: string) => [value, name]}
+            formatter={(value: unknown, name: string) => [String(value), name]}
             labelFormatter={() => ''}
           />
           <Legend />

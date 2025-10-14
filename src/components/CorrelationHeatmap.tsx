@@ -1,12 +1,5 @@
 import React from "react"
-
-interface CorrelationResult {
-  column_a: string
-  column_b: string
-  pearson: number
-  spearman: number
-  kendall: number
-}
+import type { CorrelationResult } from '../app/utils'
 
 interface CorrelationHeatmapProps {
   numericColumns: string[]
@@ -25,13 +18,13 @@ function getColor(value: number) {
 
 export default function CorrelationHeatmap({ numericColumns, correlationResults, method, onSelectPair, selectedPair }: CorrelationHeatmapProps) {
   // Crear matriz para acceso rápido
-  const matrix: Record<string, Record<string, number>> = {}
+  const matrix: Record<string, Record<string, number | undefined>> = {}
   correlationResults.forEach(res => {
     if (!matrix[res.column_a]) matrix[res.column_a] = {}
-    matrix[res.column_a][res.column_b] = res[method]
+    matrix[res.column_a][res.column_b] = res[method] ?? undefined
     // Simetría
     if (!matrix[res.column_b]) matrix[res.column_b] = {}
-    matrix[res.column_b][res.column_a] = res[method]
+    matrix[res.column_b][res.column_a] = res[method] ?? undefined
   })
 
   return (
@@ -59,10 +52,10 @@ export default function CorrelationHeatmap({ numericColumns, correlationResults,
                   <td
                     key={colCol}
                     className={`p-2 border text-center cursor-pointer transition-all ${value !== undefined ? getColor(value) : 'bg-gray-100'} ${isSelected ? 'ring-2 ring-primary' : ''}`}
-                    title={`Correlación: ${value !== undefined ? value.toFixed(2) : 'N/A'}`}
-                    onClick={() => value !== undefined && onSelectPair?.(rowCol, colCol)}
+                    title={`Correlación: ${value !== undefined ? (value as number).toFixed(2) : 'N/A'}`}
+                        onClick={() => value !== undefined && onSelectPair?.(rowCol, colCol)}
                   >
-                    {value !== undefined ? value.toFixed(2) : 'N/A'}
+                        {value !== undefined ? (value as number).toFixed(2) : 'N/A'}
                   </td>
                 )
               })}
