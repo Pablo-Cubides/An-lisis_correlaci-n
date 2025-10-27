@@ -58,7 +58,7 @@ export default function HomePage() {
     setError(null)
     setResult(null)
   pendingFileRef.current = file
-    setProgress('Leyendo archivo...')
+    setProgress('Reading file...')
 
     try {
       const fileBuffer = await file.arrayBuffer()
@@ -71,18 +71,18 @@ export default function HomePage() {
         if (workbook.SheetNames.length > 1) {
           setSheetOptions(workbook.SheetNames)
           setSheetModalOpen(true)
-          setProgress('Por favor, selecciona una hoja.')
+          setProgress('Please select a sheet.')
           return // Wait for user to select a sheet
         }
       }
 
       // If CSV or single-sheet XLSX, parse immediately
-      setProgress('Analizando archivo e identificando columnas...')
+      setProgress('Parsing file and identifying columns...')
   workerRef.current?.postMessage({ type: 'parse', payload: { fileBuffer, fileType } }, [fileBuffer])
 
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err)
-      setError(message || 'Error al procesar el archivo.')
+      setError(message || 'Error processing file.')
       setLoading(false)
     }
   }
@@ -92,13 +92,13 @@ export default function HomePage() {
   if (!pendingFileRef.current) return
 
     setLoading(true)
-    setProgress('Leyendo la hoja seleccionada...')
+    setProgress('Reading selected sheet...')
     try {
   const fileBuffer = await pendingFileRef.current!.arrayBuffer()
   workerRef.current?.postMessage({ type: 'parse', payload: { fileBuffer, fileType: 'xlsx', sheetToUse: sheetName } }, [fileBuffer])
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err)
-      setError(message || 'Error al procesar la hoja seleccionada.')
+      setError(message || 'Error processing selected sheet.')
       setLoading(false)
     }
   }
@@ -106,11 +106,11 @@ export default function HomePage() {
   function handleColumnConfirm(selectedColumns: string[]) {
     setColumnModalOpen(false)
     if (selectedColumns.length < 2) {
-      setError('Por favor, selecciona al menos dos columnas para analizar.')
+      setError('Please select at least two columns to analyze.')
       return
     }
     setLoading(true)
-    setProgress('Calculando correlaciones...')
+    setProgress('Calculating correlations...')
     workerRef.current?.postMessage({ type: 'calculate', payload: { selectedColumns } })
   }
 
@@ -124,29 +124,29 @@ export default function HomePage() {
   return (
     <section className="flex flex-col w-full max-w-2xl gap-8 p-8 mx-auto bg-white rounded-lg shadow">
       <div className="flex flex-col items-center gap-2">
-        <div className="flex items-center justify-center w-16 h-16 text-2xl font-bold text-white rounded-full bg-primary">AR</div>
-        <h1 className="text-2xl font-bold text-primary">Análisis Relacional</h1>
+        <div className="flex items-center justify-center w-16 h-16 text-2xl font-bold text-white rounded-full bg-primary">RI</div>
+        <h1 className="text-2xl font-bold text-primary">Relational Insight</h1>
         <p className="text-center text-gray-500">
-          Sube un archivo <strong>.csv</strong> o <strong>.xlsx</strong> para analizar las correlaciones entre las columnas numéricas.
+          Upload a <strong>.csv</strong> or <strong>.xlsx</strong> file to analyze correlations between numeric columns.
         </p>
         <div className="max-w-md text-sm text-center text-gray-600">
           <p className="mb-2">
-            <strong>Formato Requerido:</strong> El archivo debe contener al menos dos columnas con valores numéricos.
-            Las filas con valores no numéricos o vacíos serán ignoradas.
+            <strong>Required Format:</strong> The file must contain at least two columns with numeric values.
+            Rows with non-numeric or empty values will be ignored.
           </p>
           <a
             href="/example.csv"
             download="correlation_example.csv"
             className="inline-block px-4 py-2 text-white transition-colors rounded bg-primary hover:bg-primary/80"
           >
-            📥 Descargar Archivo de Ejemplo
+            📥 Download Example File
           </a>
         </div>
       </div>
       <FileUploader onUpload={handleUpload} loading={loading} />
       {(loading || progress) && (
         <div className="flex items-center justify-center gap-2 mt-4 text-primary">
-          <span className="animate-spin">🔄</span> {progress || 'Analizando archivo...'}
+          <span className="animate-spin">🔄</span> {progress || 'Analyzing file...'}
         </div>
       )}
       <SheetSelectorModal open={sheetModalOpen} sheets={sheetOptions || []} onClose={handleCloseModals} onSelect={handleSheetSelect} />
