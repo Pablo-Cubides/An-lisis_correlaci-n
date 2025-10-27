@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /.next/
+
+Crawl-delay: 1
+
+Sitemap: https://relational-insight.vercel.app/sitemap.xml
