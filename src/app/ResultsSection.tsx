@@ -66,27 +66,40 @@ export default function ResultsSection({ result }: { result: { filename: string;
         </div>
       )}
       
-      <div className="p-6 mt-12 border rounded-lg bg-gray-50">
-        <h3 className="mb-4 text-lg font-semibold text-gray-800">¿Qué significan las correlaciones?</h3>
-        <div className="space-y-4 text-sm text-gray-700">
+      <div className="p-6 mt-12 border rounded-lg bg-blue-50 border-blue-200">
+        <h3 className="mb-4 text-lg font-semibold text-blue-900">📚 Aprende más sobre correlaciones</h3>
+        <div className="space-y-4 text-sm text-blue-900">
           <div>
-            <h4 className="mb-1 font-medium text-gray-900">Correlación de Pearson:</h4>
-            <p>Mide la relación lineal entre dos variables. Un valor cercano a 1 indica una correlación positiva fuerte (cuando una variable aumenta, la otra también lo hace). Un valor cercano a -1 indica una correlación negativa fuerte (cuando una variable aumenta, la otra disminuye). Un valor cercano a 0 indica poca o ninguna relación lineal.</p>
+            <h4 className="mb-1 font-medium">Correlación de Pearson:</h4>
+            <p className="mb-2">Mide la relación lineal entre dos variables. Ideal para datos normalmente distribuidos.</p>
+            <a href="/resources#pearson" className="inline-flex items-center gap-1 text-blue-700 hover:underline font-medium">
+              Ver referencias académicas →
+            </a>
           </div>
           
           <div>
-            <h4 className="mb-1 font-medium text-gray-900">Correlación de Spearman:</h4>
-            <p>Evalúa la relación monotónica entre dos variables, basada en rangos en lugar de valores absolutos. Es útil cuando los datos no siguen una distribución normal o cuando hay valores atípicos. Valores cercanos a 1 o -1 indican una relación fuerte, mientras que valores cercanos a 0 sugieren una relación débil o inexistente.</p>
+            <h4 className="mb-1 font-medium">Correlación de Spearman:</h4>
+            <p className="mb-2">Alternativa no paramétrica que evalúa relaciones monotónicas. Robusta ante valores atípicos.</p>
+            <a href="/resources#spearman" className="inline-flex items-center gap-1 text-blue-700 hover:underline font-medium">
+              Ver referencias académicas →
+            </a>
           </div>
           
           <div>
-            <h4 className="mb-1 font-medium text-gray-900">Correlación de Kendall Tau:</h4>
-            <p>Mide la concordancia ordinal entre dos variables, evaluando si los pares de observaciones tienen el mismo orden relativo. Es menos sensible a valores extremos que Pearson y Spearman. Valores cercanos a 1 indican una fuerte concordancia, valores cercanos a -1 indican discordancia fuerte, y valores cercanos a 0 sugieren independencia ordinal.</p>
+            <h4 className="mb-1 font-medium">Correlación de Kendall Tau:</h4>
+            <p className="mb-2">Medida no paramétrica ideal para muestras pequeñas y datos con muchos empates.</p>
+            <a href="/resources#kendall" className="inline-flex items-center gap-1 text-blue-700 hover:underline font-medium">
+              Ver referencias académicas →
+            </a>
           </div>
           
-          <div>
-            <h4 className="mb-1 font-medium text-gray-900">Interpretación general:</h4>
-            <p>Correlaciones entre 0.8 y 1.0 (o -0.8 y -1.0) se consideran fuertes. Entre 0.6 y 0.8 (o -0.6 y -0.8) moderadas. Entre 0.3 y 0.6 (o -0.3 y -0.6) débiles. Y por debajo de 0.3 (o -0.3) muy débiles o inexistentes. Recuerda que la correlación no implica causalidad.</p>
+          <div className="mt-4 pt-4 border-t border-blue-200">
+            <p className="text-xs text-blue-800 mb-3">
+              Todos nuestros recursos provienen de fuentes académicas confiables: Scribbr, Wikipedia, Laerd Statistics, Stats Tutor y universidades reconocidas.
+            </p>
+            <a href="/resources" className="inline-flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-medium text-sm">
+              Centro de Recursos Completo →
+            </a>
           </div>
         </div>
       </div>

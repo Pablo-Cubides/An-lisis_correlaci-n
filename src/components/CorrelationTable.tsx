@@ -6,16 +6,22 @@ const methodInfo = {
     label: "Pearson",
     color: "bg-blue-500",
     tooltip: "Coeficiente de correlación de Pearson: mide la relación lineal entre dos variables numéricas.",
+    description: "Mide relaciones lineales. Ideal para datos normalmente distribuidos.",
+    resources: "https://www.scribbr.com/statistics/pearson-correlation-coefficient/",
   },
   spearman: {
     label: "Spearman",
     color: "bg-green-500",
     tooltip: "Correlación de Spearman: mide la relación monótona (no necesariamente lineal) entre dos variables numéricas.",
+    description: "Alternativa no paramétrica. Robusta ante valores atípicos.",
+    resources: "https://statistics.laerd.com/statistical-guides/spearmans-rank-order-correlation-statistical-guide.php",
   },
   kendall: {
     label: "Kendall Tau",
     color: "bg-purple-500",
     tooltip: "Tau de Kendall: mide la concordancia en el orden de los valores entre dos variables numéricas.",
+    description: "Ideal para muestras pequeñas y datos empatados. No paramétrica.",
+    resources: "https://www.statisticssolutions.com/free-resources/directory-of-statistical-analyses/kendalls-tau-and-spearmans-rank-correlation-coefficient/",
   },
 }
 
@@ -82,9 +88,18 @@ export default function CorrelationTable({ numericColumns, correlationResults }:
                             >
                               {methodInfo[method].label}: {val !== null ? val.toFixed(2) : 'N/A'}
                               <span className="ml-1">{val !== null ? getStrengthEmoji(val) : ''}</span>
-                              <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1 z-10 whitespace-nowrap">
-                                {methodInfo[method].tooltip}
-                              </span>
+                              <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded px-3 py-2 z-10 w-max shadow-lg">
+                                <p className="font-semibold mb-1">{methodInfo[method].tooltip}</p>
+                                <p className="mb-2">{methodInfo[method].description}</p>
+                                <a 
+                                  href={methodInfo[method].resources}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-blue-300 hover:text-blue-200 underline text-xs"
+                                >
+                                  Ver referencias →
+                                </a>
+                              </div>
                             </span>
                           )
                         })}
